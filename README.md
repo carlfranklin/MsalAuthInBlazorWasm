@@ -2,12 +2,6 @@
 
 In this episode, we are going to create an **Azure AD B2C** tenant and configure it for email authentication. We are going to create a new **Blazor WebAssembly** hosted application via the **.NET Core CLI**, which comes pre-loaded with everything you'll need to do auth with MSAL.
 
-Unlike previous episodes where we added the configuration and support files by hand, .NET 7 includes a Command Line Interface (CLI) command that uses a template for creating an app that's pre-configured with the values we give it from Azure AD B2C app registrations.
-
-> :point_up: I will use the Azure CLI wherever possible to avoid dealing with the Azure Portal, which tends to change over time. As of this writing, I only have the commands to register an application.
->
-> I have my eyes on this: https://github.com/msimecek/AAD-automations but I have not been able to get it working. Please feel free to contribute Azure CLI help to this README.
-
 For a similar demo but using **Blazor Server** and **Msal.Net** in .NET 6, consider watching the following episode.
 
 | Episode                    | YouTube URL                                   | GitHub Repo URL                                    |
@@ -17,8 +11,6 @@ For a similar demo but using **Blazor Server** and **Msal.Net** in .NET 6, consi
 The steps in this README and subsequent information was gleaned from the following documentation:
 
 https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/hosted-with-azure-active-directory-b2c?view=aspnetcore-7.0
-
-
 
 ## Prerequisites
 
@@ -55,12 +47,6 @@ In the following demo we will perform the following actions:
 3. Create a new **Blazor WebAssembly** hosted application using the .NET CLI
 
 ## Create a new Azure AD B2C Tenant
-
-As of this writing (November 10th, 2022) I could not find way to create a new tenant using the Azure CLI. 
-
-However, you can use Pulumi. See https://www.pulumi.com/registry/packages/azure-native/api-docs/azureactivedirectory/b2ctenant/
-
-We will use the Azure Portal.
 
 Sign in to **Azure** and go to the main menu, and click on **New resource**.
 
@@ -104,78 +90,6 @@ Click on the link provided to go to the **Tenant Overview** screen.
 
 ## Register a Server API Application
 
-### Using the Azure CLI
-
-The following information was taken from https://learn.microsoft.com/en-us/azure/healthcare-apis/register-application-cli-rest
-
-Open a command window as an administrator.
-
-Run Powershell:
-
-```
-PowerShell
-```
-
-Navigate to the directory where you want to create your application and execute the following:
-
-```
-az --version
-```
-
-If your CLI is not up to date, you'll need to upgrade with this command:
-
-```
-az upgrade
-```
-
-If, at any time you get errors about commands not being available, you can re-install the Azure CLI from a Powershell console. Enter `Powershell` at the command line, and execute these commands:
-
-```
-Install-Module -Name Az -AllowClobber
-Connect-AzAccount
-```
-
-Next, log in to your new tenant:
-
-```
-az login --tenant {YOUR-TENANT-NAME}.onmicrosoft.com --allow-no-subscriptions
-```
-
-My command looks like this:
-
-```
-az login --tenant authinblazorwasm.onmicrosoft.com --allow-no-subscriptions
-```
-
-Once logged in, execute the following commands to ensure that you have the account and Azure Health Data Services extensions installed:
-
-```
-az extension add --name account
-az extension add --name healthcareapis
-```
-
-To show that you are logged in with your default subscription, execute this command:
-
-```
-az account show --output table
-```
-
-To register the application, we're going to use the `az ad app create` command, the details of which you can find at https://learn.microsoft.com/en-us/cli/azure/ad/app?view=azure-cli-latest#az-ad-app-create
-
-Execute this command:
-
-```
-az ad app create --display-name AuthInBlazorWasm --sign-in-audience AzureADandPersonalMicrosoftAccount
-```
-
-At the top of the output JSON, you'll see the `appId` value. That's the client ID. Copy it to a safe place:
-
-```json
-"appId": "e8d35b55-a05a-47ad-8047-76e48bfae0f5",
-```
-
-### Using the Azure Portal
-
 Go to **App registrations** and click on **+ New registration**.
 
 ![New registration](md-images/d6a20b9a774b1d046c9d65b0243c757d2c91f4c40806d1a1a8a26cef4ff7c9f1.png)  
@@ -187,10 +101,6 @@ Enter the following settings and click on **Register**.
 >:point_up: Take note of the **Application (client) ID**, as we are going to need later.
 
 ## Expose an API
-
-> Azure CLI instructions will be provided at a later time
-
-### Using the Azure CLI
 
 Click on **Expose API** and then on **+ Add a scope**.
 

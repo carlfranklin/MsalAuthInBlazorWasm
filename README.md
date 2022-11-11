@@ -162,7 +162,7 @@ In the main **Search** box, enter **azure ad b2c** and select **Azure AD B2C**.
 
 ![Azure AD B2C](md-images/9e89d0969cebf5b5eedd480a06ff840c24f0658ad447f49d0d76bccae477338c.png)
 
-Click on **User flows** and then on **+New User Flow**.
+Click on **User flows** and then on **+ New User Flow**.
 
 ![User Flow](md-images/297ca83008fb5c3ff7e30eaae7ad9b4ba1a8c7bb6156a9e86b453248554f6a76.png)  
 
@@ -186,7 +186,7 @@ Now you can click **Ok** to create the **User flow**.
 
 ## Create the Blazor Wasm Application
 
-Now we are ready to create our **Blazor Wasm** application, using all the settings we need and took note in steps above.
+Now we are ready to create our **Blazor Wasm** application, using all the settings we need and took note of in the steps above.
 
 We are going to use the **.NET Core CLI** to create our **Blazor Wasm** application by entering the following command on your **Windows Terminal**:
 
@@ -194,7 +194,7 @@ We are going to use the **.NET Core CLI** to create our **Blazor Wasm** applicat
 dotnet new blazorwasm -au IndividualB2C --aad-b2c-instance "{AAD B2C INSTANCE}" --api-client-id "{SERVER API APP CLIENT ID}" --app-id-uri "{SERVER API APP ID URI}" --client-id "{CLIENT APP CLIENT ID}" --default-scope "{DEFAULT SCOPE}" --domain "{TENANT DOMAIN}" -ho -o {APP NAME} -ssp "{SIGN UP OR SIGN IN POLICY}"
 ```
 
->:point_up: We need to replace all the placeholders with the values we took note on previous steps.
+>:point_up: We need to replace all the placeholders with the values we took note of in previous steps.
 
 To make it easier, I compiled a summary of all the values we need to replace, and where to get them from, as well as examples of their values based on my current settings.
 
@@ -311,13 +311,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 > :point_up: When a single authentication scheme is registered, the authentication scheme is automatically used as the app's default scheme, and it isn't necessary to state the scheme to [AddAuthentication](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.authenticationservicecollectionextensions.addauthentication) or via [AuthenticationOptions](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.authenticationoptions). For more information, see [Overview of ASP.NET Core Authentication](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/?view=aspnetcore-7.0#defaultscheme) and the [ASP.NET Core announcement (aspnet/Announcements #490)](https://github.com/aspnet/Announcements/issues/490).
 
-[UseAuthentication](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.authappbuilderextensions.useauthentication) and [UseAuthorization](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.authorizationappbuilderextensions.useauthorization) ensure that:
-
-- The app attempts to parse and validate tokens on incoming requests.
-- Any request attempting to access a protected resource without proper credentials fails.
+[UseAuthorization](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.authorizationappbuilderextensions.useauthorization) ensures that any request attempting to access a protected resource without proper credentials fails.
 
 ```csharp
-app.UseAuthentication();
 app.UseAuthorization();
 ```
 
@@ -450,8 +446,6 @@ Configuration is supplied by the `wwwroot/appsettings.json` file:
 In the preceding configuration, the `{AAD B2C INSTANCE}` includes a trailing slash.
 
 Example:
-
-JSONCopy
 
 ```json
 {
@@ -650,7 +644,7 @@ If the request failed because the token couldn't be provisioned without user int
 - ASP.NET Core 7.0 or later: The app navigates to `AccessTokenResult.InteractiveRequestUrl` using the given `AccessTokenResult.InteractionOptions` to allow refreshing the access token.
 - ASP.NET Core 6.0 or earlier: The token result contains a redirect URL. Navigating to this URL takes the user to the login page and back to the current page after a successful authentication.
 
-```razor
+```c#
 @page "/fetchdata"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
